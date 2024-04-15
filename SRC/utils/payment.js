@@ -1,0 +1,30 @@
+import {Stripe} from "stripe";
+export const paymentFunction=async({
+    payment_method_types=['card'],
+    mode='payment',
+    customer_email='',
+    metadata={},
+    success_url,
+    cancel_url,
+    discounts=[],
+    line_items=[],
+    percent_off,
+    amount_off,
+    currency
+})=>{
+    const stripe=new Stripe(process.env.STRIPE_SECRET_KEY)
+    const paymentData=await stripe.checkout.sessions.create({
+        payment_method_types,
+        mode,
+        customer_email,
+        metadata,
+        success_url,
+        cancel_url,
+        discounts,
+        line_items,
+        percent_off,
+        amount_off,
+        currency
+    })
+    return paymentData
+}
